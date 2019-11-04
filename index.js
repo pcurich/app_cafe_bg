@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 const whiteList = [process.env.FRONTEND_URL];
 const corsOptions = {
     origin: (origin, callback) => {
+        console.log(whiteList);
         //caso particular de postman
         if(typeof(origin)==='undefined'){
             callback(null, true);
@@ -36,7 +37,8 @@ const corsOptions = {
             if(exist){
                 callback(null, true);
             }else{
-                callback(new Error('No permitido por CORS' + origin)); 
+                callback(new Error('No permitido por CORS ' + origin)); 
+                
             }
         }
     }
