@@ -1,7 +1,6 @@
 const Customer = require('../models/Customer');
 
 //Add New Customer
-
 exports.New = async(req, res,next) => {
     const customer = new Customer(req.body);
 
@@ -24,22 +23,26 @@ exports.List = async(req, res,next) => {
         res.json(customers);
     } catch (error) {
         //console log, and next
-        console.log(error);
+        res.send(error);
         next();
     }
 }
 
 //Show Customers by Id
 exports.FindById = async(req, res,next) => {
-    var customer = await Customer.findById(req.params.id)
+    try {
+        var customer = await Customer.findById(req.params.id)
 
-    if(!customer){
-        res.json({message: "Este cliente no existe"});
+        if(!customer){
+            res.json({message: "Este cliente no existe"});
+            next();
+        }
+    
+        res.json(customer);
+    } catch (error) {
+        res.send(error);
         next();
     }
-
-    res.json(customer);
-
 }
 
 //Update Customers by Id
