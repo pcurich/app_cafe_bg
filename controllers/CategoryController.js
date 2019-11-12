@@ -1,10 +1,13 @@
 const Category = require('../models/Category');
+const Product =  require('../models/Product');
+const ObjectId = require('mongoose').Types.ObjectId;
+
 
 //Add New Category
 exports.New = async(req, res,next) => {
     const category = new Category(req.body);
 
-    try {
+    try { 
         await category.save();
         res.json({message: 'Se agrego una nueva categoria'})
     } catch (error) {
@@ -54,12 +57,21 @@ exports.Update = async(req, res,next) => {
     }
 }
 
-//delete customer by Id
+//delete category by Id
 exports.Delete = async(req, res,next) => {
-    try {
-        await Customer.findOneAndDelete( {_id : req.params.id} );
-        res.json( { message: "Categoria Eliminada"});
-        //TODO nECESITO SABER SI HAY PRODUCTOS CON COMPRA ANTES DE BORRAR FISICAMENTEgit add .
+    try { 
+        //Pregunto si esa categoria esta asignada a un producto
+        const product = await Product.find({category:new ObjectId(req.params.id)});
+        if(product.length == 0 ){
+            //No estaba asignado por ende puedo borrar
+            await Category.findOneAndDelete( {_id : req.params.id} );
+        }else{
+            const filter = { _id: req.params.id };
+            const update = { deleted: true };
+            //si esta asignado entonces puede que exista historico y actualizo el campo {deleted: true}
+            await Category.findOneAndUpdate(filter, update, {new: true});
+        } 
+        res.json( { message: "Categoria Eliminada"}); 
     } catch (error) {
         res.send(error);
         next();

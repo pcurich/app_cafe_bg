@@ -6,6 +6,7 @@ const auth = require('../middleware/auth')
 
 const customersController = require('../controllers/CustomersController');
 const productsController = require('../controllers/ProductsController');
+const categoriesController = require('../controllers/CategoryController');
 const shoppingCartController = require('../controllers/ShoppingCartController');
 const UserController = require('../controllers/UserController');
 
@@ -28,6 +29,22 @@ module.exports = function(){
   //Update
   router.delete('/customers/:id',auth,customersController.Delete);
 
+  /** CATEGORIES */
+
+  //Add new Category
+  router.post('/categories', categoriesController.New);
+
+  //Get all categories
+  router.get('/categories',categoriesController.List);
+
+  //id customers
+  router.get('/categories/:id',categoriesController.FindById);
+
+  //Update
+  router.put('/categories/:id',categoriesController.Update);
+
+  //Delete
+  router.delete('/categories/:id',categoriesController.Delete);
 
   /** PRODUCTS */
 
@@ -35,7 +52,7 @@ module.exports = function(){
   router.post('/products', auth,productsController.Upload, productsController.New);
 
   //Get all customers
-  router.get('/products',auth,productsController.List);
+  router.get('/products', productsController.List);
 
   //id customers
   router.get('/products/:id',auth,productsController.FindById);
