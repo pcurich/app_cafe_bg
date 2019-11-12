@@ -5,9 +5,10 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 //Add New Category
 exports.New = async(req, res,next) => {
+    console.log(req.body);
     const category = new Category(req.body);
 
-    try { 
+    try {
         await category.save();
         res.json({message: 'Se agrego una nueva categoria'})
     } catch (error) {
@@ -38,7 +39,7 @@ exports.FindById = async(req, res,next) => {
             res.json({message: "Esta categoria no existe"});
             next();
         }
-        
+
         res.json(category);
     } catch (error) {
         res.send(error);
@@ -59,7 +60,7 @@ exports.Update = async(req, res,next) => {
 
 //delete category by Id
 exports.Delete = async(req, res,next) => {
-    try { 
+    try {
         //Pregunto si esa categoria esta asignada a un producto
         const product = await Product.find({category:new ObjectId(req.params.id)});
         if(product.length == 0 ){
@@ -70,8 +71,8 @@ exports.Delete = async(req, res,next) => {
             const update = { deleted: true };
             //si esta asignado entonces puede que exista historico y actualizo el campo {deleted: true}
             await Category.findOneAndUpdate(filter, update, {new: true});
-        } 
-        res.json( { message: "Categoria Eliminada"}); 
+        }
+        res.json( { message: "Categoria Eliminada"});
     } catch (error) {
         res.send(error);
         next();

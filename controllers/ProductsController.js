@@ -26,18 +26,27 @@ const upload = multer(configurationMulter).single('photo')
 
 //UploadFile
 exports.Upload = async(req, res,next) => {
-  upload(req,res,function(error){
-    if(error){
-      res.json({message:error})
-    }
+  console.log("FILENAME");
+  console.log(req.file);
+  console.log(req.body);
+
+  if(typeof req.file !== 'undefined')
+  {
+    upload(req,res,function(error){
+      if(error){
+        res.json({message:error})
+      }
+      return next();
+    })
+  }else{
     return next();
-  })
+  }
 }
 
 //Add New Product
 exports.New = async(req, res,next) => {
     const product = new Product(req.body);
-
+    console.log(req.body);
     try {
         if(req.file.filename){
           product.photo = req.file.filename

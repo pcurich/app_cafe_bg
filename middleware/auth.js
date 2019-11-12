@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
     // obtener el token y verificarlo
     const token = authHeader.split(' ')[1];
     let ckeckToken;
+
     try {
         ckeckToken = jwt.verify(token, 'LLAVESECRETA');
     } catch (error) {

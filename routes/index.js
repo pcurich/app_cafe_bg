@@ -35,7 +35,7 @@ module.exports = function(){
   router.post('/categories', categoriesController.New);
 
   //Get all categories
-  router.get('/categories',categoriesController.List);
+  router.get('/categories',auth,categoriesController.List);
 
   //id customers
   router.get('/categories/:id',categoriesController.FindById);
@@ -49,7 +49,7 @@ module.exports = function(){
   /** PRODUCTS */
 
   //Add new Customer POST
-  router.post('/products', auth,productsController.Upload, productsController.New);
+  router.post('/products', productsController.Upload, productsController.New);
 
   //Get all customers
   router.get('/products', productsController.List);

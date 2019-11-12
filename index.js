@@ -10,7 +10,8 @@ const cors = require('cors');
 //conectar a mongo
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DB_URL,{
-    useNewUrlParser : true
+    useNewUrlParser : true,
+    useUnifiedTopology: true
 });
 
 //crer el servidor
@@ -36,8 +37,8 @@ const corsOptions = {
             if(exist){
                 callback(null, true);
             }else{
-                callback(new Error('No permitido por CORS ' + origin)); 
-                
+                callback(new Error('No permitido por CORS ' + origin));
+
             }
         }
     }
