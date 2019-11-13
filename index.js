@@ -38,7 +38,6 @@ const corsOptions = {
                 callback(null, true);
             }else{
                 callback(new Error('No permitido por CORS ' + origin));
-
             }
         }
     }

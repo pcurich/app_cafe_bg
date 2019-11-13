@@ -26,10 +26,6 @@ const upload = multer(configurationMulter).single('photo')
 
 //UploadFile
 exports.Upload = async(req, res,next) => {
-  console.log("FILENAME");
-  console.log(req.file);
-  console.log(req.body);
-
   if(typeof req.file !== 'undefined')
   {
     upload(req,res,function(error){

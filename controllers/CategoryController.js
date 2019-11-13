@@ -13,8 +13,8 @@ exports.New = async(req, res,next) => {
         res.json({message: 'Se agrego una nueva categoria'})
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }
 
 //Show All Categories
@@ -26,8 +26,9 @@ exports.List = async(req, res,next) => {
     } catch (error) {
         //console log, and next
         console.log(error);
-        next();
+
     }
+    next();
 }
 
 //Show Category by Id
@@ -37,14 +38,13 @@ exports.FindById = async(req, res,next) => {
 
         if(!category){
             res.json({message: "Esta categoria no existe"});
-            next();
         }
 
         res.json(category);
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }
 
 //Update Category by Id
@@ -54,8 +54,8 @@ exports.Update = async(req, res,next) => {
         res.json(category);
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }
 
 //delete category by Id
@@ -75,6 +75,6 @@ exports.Delete = async(req, res,next) => {
         res.json( { message: "Categoria Eliminada"});
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }
