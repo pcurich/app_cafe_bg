@@ -32,7 +32,7 @@ module.exports = function(){
   /** CATEGORIES */
 
   //Add new Category
-  router.post('/categories', categoriesController.New);
+  router.post('/categories',auth, categoriesController.New);
 
   //Get all categories
   router.get('/categories',auth,categoriesController.List);
