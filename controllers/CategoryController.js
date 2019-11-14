@@ -5,9 +5,8 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 //Add New Category
 exports.New = async(req, res,next) => {
-    console.log(req.body);
     const category = new Category(req.body);
-
+    category.deleted = false;
     try {
         await category.save();
         res.json({message: 'Se agrego una nueva categoria'})
@@ -35,7 +34,9 @@ exports.List = async(req, res,next) => {
 exports.FindById = async(req, res,next) => {
     try {
         var category = await Category.findById(req.params.id)
-
+        if(category.photo.length==0){
+            category.photo= 'default.png'
+        }
         if(!category){
             res.json({message: "Esta categoria no existe"});
         }
