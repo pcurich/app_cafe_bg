@@ -2,6 +2,10 @@ const express = require('express');
 const routes = require('./routes');
 const mongoose =require('mongoose');
 const bodyParser = require('body-parser');
+
+const multer = require('multer');
+const shortid = require('shortid');
+
 require('dotenv').config({path:'var.env'});
 
 //cors permite que un cliente se conecte a otro servidor para el intercambio de recursos
@@ -45,6 +49,35 @@ const corsOptions = {
 
 //Habilitar cors
 app.use(cors(corsOptions));
+
+//middlewares 
+
+const configurationMulter = {
+    storage: fileStorage = multer.diskStorage({
+        destination: (req,file,cb)=>{
+            cb(null,__dirname+'/uploads/');
+        },
+        filename:(req,file,cb)=>{
+            const extension = file.mimetype.split('/')[1];
+            cb(null,`${shortid.generate()}.${extension}`);
+        }
+    }),
+    fileFilter(req,file,cb){
+        if(file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+            cb(null,true);
+        }else{
+            cb(new Error('Formato no valido'))
+        }
+    },
+    limits:{
+        fileSize: 1000000 //1MB
+    }
+}
+
+//pasar la configuracion y el campo
+const upload = multer(configurationMulter).single('photo')
+
+app.use(upload);
 
 //rutas de la APP
 app.use('/', routes());

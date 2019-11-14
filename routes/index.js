@@ -11,12 +11,12 @@ const shoppingCartController = require('../controllers/ShoppingCartController');
 const UserController = require('../controllers/UserController');
 
 const mediaController = require('../controllers/MediaController');
-const DummyController = require('../controllers/DummyController');
+const dummyController = require('../controllers/DummyController');
 
 module.exports = function(){
 
   /**Upload */
-  router.post('/upload', mediaController.Upload);
+  router.post('/upload',auth, mediaController.Upload);
 
   /** CUSTOMERS */
 
@@ -95,7 +95,7 @@ module.exports = function(){
   router.post('/login',UserController.Login)
 
   /**DUMMNY */
-  router.post('/dummy',DummyController.New)
+  router.post('/dummy',dummyController.New)
 
   return router;
 }
