@@ -72,6 +72,8 @@ module.exports = function(){
   //search
   router.post('/products/search/:query',auth,productsController.Search);
 
+  //Product by Category
+  // router.post('/product-by-category/:id',auth,productsController.ProductByCategory);
   /** SHOPPINGCART */
 
   //Add new shoppingCard POST
