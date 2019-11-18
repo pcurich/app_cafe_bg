@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const multer = require('multer');
 const shortid = require('shortid');
+const mongoose = require('mongoose');
 
 const configurationMulter = {
   storage: fileStorage = multer.diskStorage({
@@ -124,4 +125,42 @@ exports.Search = async(req, res,next) => {
       res.send(error);
       next();
   }
+}
+
+exports.GetProductByCategory = async(req,res,next) => {
+  try {
+    const {idCategory} = req.params;
+    var products = await Product.find({category: new mongoose.Types.ObjectId(idCategory)})
+    res.json(products);
+  } catch (error) {
+    res.send(error)
+  }
+  next();
+}
+
+exports.NewProductByCategory = async(req,res,next) => {
+  try {
+    const {idCategory,idProduct} = req.params;
+    const newProduct = await Product.findById(idProduct);
+    newProduct.category = new mongoose.Types.ObjectId(idCategory);
+    var product = await Product.findOneAndUpdate( {_id : idProduct}, newProduct, {new: true} );
+    res.json(product);
+  } catch (error) {
+    res.send(error)
+  }
+  next();
+}
+
+exports.DeleteCategory = async(req,res,next) => {
+  try {
+    const {idProduct} = req.params;
+    console.log(idProduct)
+    const newProduct = await Product.findById(idProduct);
+    newProduct.category = null;
+    var product = await Product.findOneAndUpdate( {_id : idProduct}, newProduct, {new: true} );
+    res.json(product);
+  } catch (error) {
+    res.send(error)
+  }
+  next();
 }

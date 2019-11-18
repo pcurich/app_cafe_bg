@@ -73,7 +73,14 @@ module.exports = function(){
   router.post('/products/search/:query',auth,productsController.Search);
 
   //Product by Category
-  // router.post('/product-by-category/:id',auth,productsController.ProductByCategory);
+  router.get('/product-by-category/:idCategory',auth,productsController.GetProductByCategory);
+
+  //Add Product to Category
+  router.post('/product-by-category/:idCategory/:idProduct',auth,productsController.NewProductByCategory);
+  
+  //Remove Category from product
+  router.put('/product-by-category/:idProduct',auth,productsController.DeleteCategory);
+
   /** SHOPPINGCART */
 
   //Add new shoppingCard POST
@@ -98,6 +105,6 @@ module.exports = function(){
 
   /**DUMMNY */
   router.post('/dummy',dummyController.New)
-
+  
   return router;
 }
