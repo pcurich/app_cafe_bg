@@ -18,14 +18,10 @@ const productSchema = new Schema({
                 required: [true, 'Necesita definir un nombre al peoducto'],
                 unique: true,
                 minlength: [4, 'El nombre del producto debe ser mayor a 4 caracteres'],
-                maxlength: [40,'El nombre del producto no debe ser mayor a 40 caracteres']
+                maxlength: [32,'El nombre del producto no debe ser mayor a 32 caracteres']
               },
   description:{
                 type: String, trim:true
-              },
-  drink    :  {
-                type: String,
-                enum: ['Coffee', 'Tea']
               },
   type     : {
                 type: String,
