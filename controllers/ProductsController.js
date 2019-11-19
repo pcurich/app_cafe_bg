@@ -33,29 +33,23 @@ exports.Upload = async(req, res,next) => {
       if(error){
         res.json({message:error})
       }
-      return next();
     })
-  }else{
-    return next();
   }
+  next();
 }
 
 //Add New Product
 exports.New = async(req, res,next) => {
     const product = new Product(req.body);
-    console.log(req.body);
+    product.delete = false;
     try {
-        if(req.file.filename){
-          product.photo = req.file.filename
-        }
-        //save record
-        await product.save();
-        res.json({message: 'Se agrego un nuevo producto'})
+      await product.save();
+      res.json({message: 'Se agrego un nuevo producto'})
     } catch (error) {
-        //console log, and next
-        res.send(error);
-        next();
+      console.log(error);
+      res.send(error);
     }
+    next();
 }
 
 //Show All Products
@@ -87,15 +81,9 @@ exports.Update = async(req, res,next) => {
     try {
         //construit un nuevo producto
         let newProduct = req.body;
-
-        //verificar si hay imagen nueva
-        if(req.file){
-          newProduct.photo = req.file.filename;
-        }else{
-          let oldProduct = await Product.findById(req.params.id);
-          newProduct.photo = oldProduct.photo;
-        }
-
+        newProduct.delete = false;
+        let oldProduct = await Product.findById(req.params.id);
+        newProduct.category = oldProduct.category
         var product = await Product.findOneAndUpdate( {_id : req.params.id}, newProduct, {new: true} );
         res.json(product);
     } catch (error) {

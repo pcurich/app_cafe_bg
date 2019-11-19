@@ -11,6 +11,7 @@ exports.New = async(req, res,next) => {
         await category.save();
         res.json({message: 'Se agrego una nueva categoria'})
     } catch (error) {
+        console.log(error);
         res.send(error);
     }
     next();
