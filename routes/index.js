@@ -55,7 +55,7 @@ module.exports = function(){
   /** PRODUCTS */
 
   //Add new Customer POST
-  router.post('/products', productsController.Upload, productsController.New);
+  router.post('/products', productsController.New);
 
   //Get all customers
   router.get('/products', productsController.List);
@@ -64,7 +64,7 @@ module.exports = function(){
   router.get('/products/:id',auth,productsController.FindById);
 
   //Update
-  router.put('/products/:id',auth,productsController.Upload,productsController.Update);
+  router.put('/products/:id',auth, productsController.Update);
 
   //Delete
   router.delete('/products/:id',auth,productsController.Delete);
