@@ -45,6 +45,18 @@ exports.FindById = async(req, res,next) => {
     }
 }
 
+exports.Search = async(req, res,next) => {
+    try {
+        const {query} = req.params;
+        const customers = await Customer.find( { document_value : new RegExp(query,'i')} );
+        res.json(customers);
+        console.log(customers);
+    } catch (error) {
+        res.send(error);
+    }
+    next();
+}
+
 //Update Customers by Id
 exports.Update = async(req, res,next) => {
     try {
@@ -52,8 +64,8 @@ exports.Update = async(req, res,next) => {
         res.json(customer);
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }
 
 //delete customer by Id
@@ -63,6 +75,6 @@ exports.Delete = async(req, res,next) => {
         res.json( { message: "Cliente Eliminado"});
     } catch (error) {
         res.send(error);
-        next();
     }
+    next();
 }

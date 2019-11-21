@@ -28,7 +28,7 @@ module.exports = function(){
 
   //id customers
   router.get('/customers/:id',auth,customersController.FindById);
-
+  router.post('/customers/search/:query',auth,customersController.Search);
   //Update
   router.put('/customers/:id',auth,customersController.Update);
 
@@ -50,7 +50,7 @@ module.exports = function(){
   router.put('/categories/:id',categoriesController.Update);
 
   //Delete
-  router.delete('/categories/:id',categoriesController.Delete);
+  router.delete('/categories/:id',auth,categoriesController.Delete);
 
   /** PRODUCTS */
 
@@ -67,7 +67,7 @@ module.exports = function(){
   router.put('/products/:id',auth, productsController.Update);
 
   //Delete
-  router.delete('/products/:id',auth,productsController.Delete);
+  router.delete('/products/:id',productsController.Delete);
 
   //search
   router.post('/products/search/:query',auth,productsController.Search);

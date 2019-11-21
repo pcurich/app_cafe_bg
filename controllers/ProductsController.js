@@ -74,8 +74,8 @@ exports.Search = async(req, res,next) => {
       res.json(products);
   } catch (error) {
       res.send(error);
-      next();
   }
+  next();
 }
 
 exports.GetProductByCategory = async(req,res,next) => {
