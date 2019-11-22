@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 //Add New Product
 exports.New = async(req, res,next) => {
     const product = new Product(req.body);
-    product.delete = false;
     try {
       await product.save();
       res.json({message: 'Se agrego un nuevo producto'})

@@ -55,10 +55,10 @@ module.exports = function(){
   /** PRODUCTS */
 
   //Add new Customer POST
-  router.post('/products', productsController.New);
+  router.post('/products', auth,productsController.New);
 
   //Get all customers
-  router.get('/products', productsController.List);
+  router.get('/products', auth,productsController.List);
 
   //id customers
   router.get('/products/:id',auth,productsController.FindById);

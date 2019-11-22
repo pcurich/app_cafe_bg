@@ -70,7 +70,7 @@ const configurationMulter = {
         }
     },
     limits:{
-        fileSize: 1000000 //1MB
+        fileSize: 10000000 //1MB
     }
 }
 
