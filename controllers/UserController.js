@@ -18,47 +18,47 @@ exports.Create = async (req, res) => {
 
 exports.Login = async (req, res, next) => {
 
-    const token = jwt.sign({
-        email : '1@1.com',
-        name: 'Pedro',
-        id : '87'
-    },
-    'LLAVESECRETA',
-    {
-        expiresIn : '1h'
-    });
+    // const token = jwt.sign({
+    //     email : '1@1.com',
+    //     name: 'Pedro',
+    //     id : '87'
+    // },
+    // 'LLAVESECRETA',
+    // {
+    //     expiresIn : '1h'
+    // });
 
     // retornar el TOKEN
-    res.json({ token });
+    //res.json({ token });
 
-    // // buscar el usuario
-    // const { email, password } = req.body;
-    // const user = await Users.findOne({ email });
+    // buscar el usuario
+    const { email, password } = req.body;
+    const user = await Users.findOne({ email });
 
-    // if(!user) {
-    //     // Si el usuario no existe
-    //     await res.status(401).json({message : 'Ese usuario no existe'});
-    //     next();
-    // } else {
-    //     // El usuario existe, verificar si el password es correcto o incorrecto
-    //     if(!bcrypt.compareSync(password, user.password )) {
-    //         // si el password es incorrecto
-    //         await res.status(401).json({ message : 'Password Incorrecto'});
-    //         next();
-    //     } else {
-    //         // password correcto, firmar el token
-    //         const token = jwt.sign({
-    //             email : user.email,
-    //             name: user.name,
-    //             id : user._id
-    //         },
-    //         'LLAVESECRETA',
-    //         {
-    //             expiresIn : '1h'
-    //         });
+    if(!user) {
+        // Si el usuario no existe
+        await res.status(401).json({message : 'Ese usuario no existe'});
+        next();
+    } else {
+        // El usuario existe, verificar si el password es correcto o incorrecto
+        if(!bcrypt.compareSync(password, user.password )) {
+            // si el password es incorrecto
+            await res.status(401).json({ message : 'Password Incorrecto'});
+            next();
+        } else {
+            // password correcto, firmar el token
+            const token = jwt.sign({
+                email : user.email,
+                name: user.name,
+                id : user._id
+            },
+            'LLAVESECRETA',
+            {
+                expiresIn : '1h'
+            });
 
-    //         // retornar el TOKEN
-    //         res.json({ token });
-    //     }
-    // }
+            // retornar el TOKEN
+            res.json({ token, user });
+        }
+    }
 }
