@@ -69,7 +69,7 @@ exports.Delete = async(req, res,next) => {
 exports.Search = async(req, res,next) => {
   try {
       const {query} = req.params;
-      const products = await Product.find( { name : new RegExp(query,'i')} );
+      const products = await Product.find( { long_name : new RegExp(query,'i')} );
       res.json(products);
   } catch (error) {
       res.send(error);
@@ -80,7 +80,6 @@ exports.Search = async(req, res,next) => {
 exports.GetProductByCategory = async(req,res,next) => {
   try {
     const {idCategory} = req.params;
-    console.log(products);
     var products = await Product.find({category: new mongoose.Types.ObjectId(idCategory)})
     res.json(products);
   } catch (error) {
