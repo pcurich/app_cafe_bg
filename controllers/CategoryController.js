@@ -22,7 +22,6 @@ exports.List = async(req, res,next) => {
     try {
         //save record
         const categories = await Category.find({deleted:false});
-        console.log(categories);
         res.json(categories);
 
     } catch (error) {

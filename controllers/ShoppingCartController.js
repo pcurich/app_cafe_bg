@@ -1,8 +1,25 @@
 const ShoppingCart = require('../models/ShoppingCart');
+const mongoose = require('mongoose');
 
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
-    const shoppingCart = new ShoppingCart(req.body);
+
+    let json =  JSON.stringify(req.body);
+    // console.log(json);
+    const shoppingCart = new ShoppingCart();
+
+    if(json.customer === ""){
+      console.log("json.customer");
+      console.log(json.customer)
+      console.log(json.customer === "")
+
+      shoppingCart.customer  = new mongoose.Types.ObjectId("000000000000000000000000");
+    }else{
+      shoppingCart.customer  = new mongoose.Types.ObjectId(json.customer);
+    }
+
+    shoppingCart.date = new Date();
+    console.log(shoppingCart);
 
     try {
         //save record

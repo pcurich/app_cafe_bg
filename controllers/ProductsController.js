@@ -104,7 +104,6 @@ exports.NewProductByCategory = async(req,res,next) => {
 exports.DeleteCategory = async(req,res,next) => {
   try {
     const {idProduct} = req.params;
-    console.log(idProduct)
     const newProduct = await Product.findById(idProduct);
     newProduct.category = null;
     var product = await Product.findOneAndUpdate( {_id : idProduct}, newProduct, {new: true} );

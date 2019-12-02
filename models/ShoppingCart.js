@@ -6,6 +6,10 @@ const shoppingCart = new Schema({
     type: Schema.ObjectId,
     ref: 'Customer'
   },
+  user:{
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
   details : [{
     product : {
       type: Schema.ObjectId,
@@ -15,6 +19,9 @@ const shoppingCart = new Schema({
   }],
   total: {
     type:Number
+  },
+  date: {
+    type:Date
   }
 });
 
