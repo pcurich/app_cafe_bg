@@ -4,32 +4,41 @@ const mongoose = require('mongoose');
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
 
-    let json =  JSON.stringify(req.body);
-    // console.log(json);
-    const shoppingCart = new ShoppingCart();
+  const shoppingCart = new ShoppingCart();
+  let json = req.body;
 
-    if(json.customer === ""){
-      console.log("json.customer");
-      console.log(json.customer)
-      console.log(json.customer === "")
+  if(json.customer !== ''){
+    shoppingCart.customer  = new mongoose.Types.ObjectId(json.customer);
+  }
+  shoppingCart.cash = json.cash;
+  shoppingCart.credit = json.credit;
+  shoppingCart.change = json.change;
+  shoppingCart.paymentType = json.paymentType;
+  shoppingCart.total = json.total;
 
-      shoppingCart.customer  = new mongoose.Types.ObjectId("000000000000000000000000");
-    }else{
-      shoppingCart.customer  = new mongoose.Types.ObjectId(json.customer);
-    }
+  shoppingCart.user  = new mongoose.Types.ObjectId(json.user);
+  shoppingCart.date = new Date();
 
-    shoppingCart.date = new Date();
-    console.log(shoppingCart);
+  json.details.forEach( product => {
+    shoppingCart.details.push(
+      {
+        product:new mongoose.Types.ObjectId(product.productId.trim()),
+        quantity:product.quantity,
+        price:product.price 
+      }
+    )
+  });
 
-    try {
-        //save record
-        await shoppingCart.save();
-        res.json({message: 'Se agrego la compra'})
-    } catch (error) {
-        //console log, and next
-        console.log(error);
-        next();
-    }
+  try {
+      //save record
+      await shoppingCart.save(); 
+      res.json({message: 'Se guardo la venta correctamente',cart:json.id})
+  } catch (error) {
+      //console log, and next
+      console.log(error);
+      res.send(error);
+      next();
+  } 
 }
 
 //Show All ShoppingCart
@@ -44,10 +53,9 @@ exports.List = async(req, res,next) => {
       });
       res.json(shoppingCart);
   } catch (error) {
-      //console log, and next
-      console.log(error);
-      next();
-  }
+    res.send(error);
+    next(); 
+  } 
 }
 
 //Show ShoppingCart by Id

@@ -10,13 +10,26 @@ const shoppingCart = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  details : [{
-    product : {
-      type: Schema.ObjectId,
-      ref: 'Product'
-    },
-    quantity: Number
-  }],
+  details : [
+    { 
+      product : { type: Schema.ObjectId, ref: 'Product' },
+      quantity: { type:Number },
+      price:    { type:Number }
+    }
+  ],
+  paymentType: {
+    type: String,
+    enum: ['Cash', 'Credit']
+  },
+  cash: {
+    type:Number
+  },
+  credit: {
+    type:Number
+  },
+  change: {
+    type:Number
+  },
   total: {
     type:Number
   },
