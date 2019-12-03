@@ -95,6 +95,9 @@ module.exports = function(){
   //id shoppingCard
   router.put('/shoppingcart/:id',auth,shoppingCartController.Update);
 
+    //id shoppingCard
+  router.get('/shoppingcart/:date/:user',auth,shoppingCartController.Search);
+
   //Delete
   router.delete('/shoppingcart/:id',auth,shoppingCartController.Delete);
 

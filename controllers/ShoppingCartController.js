@@ -103,3 +103,25 @@ exports.Delete = async(req, res,next) => {
       next();
   }
 }
+
+exports.Search = async(req, res,next) => {
+  try {
+    const {date,user} = req.params;
+
+    console.log(date);
+    console.log(user);
+
+    // var shoppingCart = await ShoppingCart.find(
+    //   {"created_on": {
+    //     "$gte": new Date(date.y, 7, 14), 
+    //     "$lt": new Date(2012, 7, 15)}})
+    //   .populate('customer')
+    //   .populate({
+    //     path:'details.product',
+    //     model:'Product'
+    //   });
+
+  } catch (error) {
+    
+  }
+}
