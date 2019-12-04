@@ -116,26 +116,32 @@ exports.Search = async(req, res,next) => {
     const {user} = req.params;
     const {year,month,day} = req.body
 
+    console.log(req.body);
+    console.log(req.params);
+
     // var newDate = new Date(date);
     // var iniDate = new Date(Date.UTC(nd.getFullYear(),nd.getMonth(),nd.getDate(),00,00,00));
     // var endDate = new Date(Date.UTC(newDate.getFullYear(),newDate.getMonth(),newDate.getDate(),23,59,59));
     // console.log(newDate);
+    var userId = new mongoose.Types.ObjectId(user);
+    console.log(typeof(userId));
+
     var shoppingCarts = await ShoppingCart.find(
       {$and:[
         {"year": year},
         {"month": month},
         {"day": day},
-        {"user": (user.trim())}
-      ]}
-    ).select('total').exec()
-      // .populate('customer')
-      // .populate({
-      //   path:'details.product',
-      //   model:'Product'
-      // });
-
-    console.log("carrito");
-    console.log(shoppingCarts);
+        {"user":userId}
+      ]},{
+        "_id": 1,"details":1,"paymentType": 1, "cash":1, "credit":1, "change":1, "total":1, "date":1,
+        "customer":1,"details":1
+      }
+    )
+    .populate('customer')
+    .populate({
+      path:'details.product',
+      model:'Product'
+    });
     res.json(shoppingCarts);
     // var shoppingCart = await ShoppingCart.find(
     //   {"created_on": {
