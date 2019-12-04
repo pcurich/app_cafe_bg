@@ -96,7 +96,7 @@ module.exports = function(){
   router.put('/shoppingcart/:id',auth,shoppingCartController.Update);
 
     //id shoppingCard
-  router.get('/shoppingcart/:date/:user',auth,shoppingCartController.Search);
+  router.post('/shoppingcart/:user',auth,shoppingCartController.Search);
 
   //Delete
   router.delete('/shoppingcart/:id',auth,shoppingCartController.Delete);
@@ -105,7 +105,7 @@ module.exports = function(){
   router.post('/create-account',UserController.Create)
 
   router.post('/login',UserController.Login)
-  
+
   /**DUMMNY */
   router.post('/dummy',dummyController.New)
 

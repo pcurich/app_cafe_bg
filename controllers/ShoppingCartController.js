@@ -17,28 +17,35 @@ exports.New = async(req, res,next) => {
   shoppingCart.total = json.total;
 
   shoppingCart.user  = new mongoose.Types.ObjectId(json.user);
-  shoppingCart.date = new Date();
+  let nd = new Date();
+  shoppingCart.date = new Date(Date.UTC(nd.getFullYear(),nd.getMonth(),nd.getDate(),nd.getHours(),nd.getMinutes(),nd.getSeconds()));
+  shoppingCart.year   =nd.getFullYear();
+  shoppingCart.month  = nd.getMonth()+1;
+  shoppingCart.day    = nd.getDate();
+  shoppingCart.hour   = nd.getHours();
+  shoppingCart.minute = nd.getMinutes();
+  shoppingCart.second = nd.getSeconds();
 
   json.details.forEach( product => {
     shoppingCart.details.push(
       {
         product:new mongoose.Types.ObjectId(product.productId.trim()),
         quantity:product.quantity,
-        price:product.price 
+        price:product.price
       }
     )
   });
 
   try {
       //save record
-      await shoppingCart.save(); 
+      await shoppingCart.save();
       res.json({message: 'Se guardo la venta correctamente',cart:json.id})
   } catch (error) {
       //console log, and next
       console.log(error);
       res.send(error);
       next();
-  } 
+  }
 }
 
 //Show All ShoppingCart
@@ -54,8 +61,8 @@ exports.List = async(req, res,next) => {
       res.json(shoppingCart);
   } catch (error) {
     res.send(error);
-    next(); 
-  } 
+    next();
+  }
 }
 
 //Show ShoppingCart by Id
@@ -106,14 +113,33 @@ exports.Delete = async(req, res,next) => {
 
 exports.Search = async(req, res,next) => {
   try {
-    const {date,user} = req.params;
+    const {user} = req.params;
+    const {year,month,day} = req.body
 
-    console.log(date);
-    console.log(user);
+    // var newDate = new Date(date);
+    // var iniDate = new Date(Date.UTC(nd.getFullYear(),nd.getMonth(),nd.getDate(),00,00,00));
+    // var endDate = new Date(Date.UTC(newDate.getFullYear(),newDate.getMonth(),newDate.getDate(),23,59,59));
+    // console.log(newDate);
+    var shoppingCarts = await ShoppingCart.find(
+      {$and:[
+        {"year": year},
+        {"month": month},
+        {"day": day},
+        {"user": (user.trim())}
+      ]}
+    ).select('total').exec()
+      // .populate('customer')
+      // .populate({
+      //   path:'details.product',
+      //   model:'Product'
+      // });
 
+    console.log("carrito");
+    console.log(shoppingCarts);
+    res.json(shoppingCarts);
     // var shoppingCart = await ShoppingCart.find(
     //   {"created_on": {
-    //     "$gte": new Date(date.y, 7, 14), 
+    //     "$gte": new Date(date.y, 7, 14),
     //     "$lt": new Date(2012, 7, 15)}})
     //   .populate('customer')
     //   .populate({
@@ -122,6 +148,6 @@ exports.Search = async(req, res,next) => {
     //   });
 
   } catch (error) {
-    
+
   }
 }

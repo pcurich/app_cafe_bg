@@ -11,7 +11,7 @@ const shoppingCart = new Schema({
     ref: 'User'
   },
   details : [
-    { 
+    {
       product : { type: Schema.ObjectId, ref: 'Product' },
       quantity: { type:Number },
       price:    { type:Number }
@@ -35,6 +35,24 @@ const shoppingCart = new Schema({
   },
   date: {
     type:Date
+  },
+  year:{
+    type:Number
+  },
+  month:{
+    type:Number
+  },
+  day:{
+    type:Number
+  },
+  hour:{
+    type:Number
+  },
+  minute:{
+    type:Number
+  },
+  second:{
+    type:Number
   }
 });
 
