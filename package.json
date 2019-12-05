@@ -23,5 +23,8 @@
     "multer": "^1.4.2",
     "nodemon": "^1.19.4",
     "shortid": "^2.2.15"
-  }
+  }https://www.npmjs.com/package/xml2json
+  http://www.curtismlarson.com/blog/2018/10/03/edit-xml-node-js/
+  https://tutorialedge.net/nodejs/editing-xml-files-with-nodejs/
+  write xml file in a directory with node
 }

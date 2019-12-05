@@ -1,6 +1,6 @@
 const ShoppingCart = require('../models/ShoppingCart');
 const mongoose = require('mongoose');
-
+var fs = require('fs');
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
 
@@ -39,6 +39,7 @@ exports.New = async(req, res,next) => {
   try {
       //save record
       await shoppingCart.save();
+
       res.json({message: 'Se guardo la venta correctamente',cart:json.id})
   } catch (error) {
       //console log, and next
