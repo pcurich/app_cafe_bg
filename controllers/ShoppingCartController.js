@@ -1,6 +1,8 @@
 const ShoppingCart = require('../models/ShoppingCart');
 const mongoose = require('mongoose');
-var fs = require('fs');
+const fs = require('fs');
+const parser = require('xml2json');
+
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
 
@@ -39,6 +41,8 @@ exports.New = async(req, res,next) => {
   try {
       //save record
       await shoppingCart.save();
+
+
 
       res.json({message: 'Se guardo la venta correctamente',cart:json.id})
   } catch (error) {
