@@ -1,7 +1,6 @@
 const ShoppingCart = require('../models/ShoppingCart');
 const mongoose = require('mongoose');
 const fs = require('fs');
-const parser = require('xml2json');
 
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
@@ -42,7 +41,9 @@ exports.New = async(req, res,next) => {
       //save record
       await shoppingCart.save();
 
-
+      // json to xml
+      var shoppingCartJson =  JSON.stringify(shoppingCart) ;
+      storeData(shoppingCartJson,"c:/print/queve/data,json")
 
       res.json({message: 'Se guardo la venta correctamente',cart:json.id})
   } catch (error) {
@@ -50,6 +51,14 @@ exports.New = async(req, res,next) => {
       console.log(error);
       res.send(error);
       next();
+  }
+}
+
+const storeData = (data, path) => {
+  try {
+    fs.writeFileSync(path, JSON.stringify(data))
+  } catch (err) {
+    console.error(err)
   }
 }
 
