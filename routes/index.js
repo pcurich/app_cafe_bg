@@ -9,6 +9,7 @@ const productsController = require('../controllers/ProductsController');
 const categoriesController = require('../controllers/CategoryController');
 const shoppingCartController = require('../controllers/ShoppingCartController');
 const UserController = require('../controllers/UserController');
+const StoreController = require('../controllers/StoreController');
 
 const mediaController = require('../controllers/MediaController');
 const dummyController = require('../controllers/DummyController');
@@ -107,7 +108,9 @@ module.exports = function(){
   router.post('/login',UserController.Login)
 
   /**DUMMNY */
-  router.post('/dummy',dummyController.New)
+  router.post('/dummy',dummyController.New);
+
+  router.get('/create-store',StoreController.Create);
 
   return router;
 }

@@ -10,6 +10,9 @@ const shoppingCart = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  ticketNumber:{
+    type:Number
+  },
   details : [
     {
       product : { type: Schema.ObjectId, ref: 'Product' },

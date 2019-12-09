@@ -13,7 +13,6 @@ exports.Create = async (req, res) => {
     } catch (error) {
         res.json({message : 'Hubo un error'});
     }
-
 }
 
 exports.Login = async (req, res, next) => {

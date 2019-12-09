@@ -1,9 +1,12 @@
 const ShoppingCart = require('../models/ShoppingCart');
+const ConfigStore = require('../models/ConfigStore');
 const mongoose = require('mongoose');
 const fs = require('fs');
 
 //Add New ShoppingCart
 exports.New = async(req, res,next) => {
+
+  const config = await ConfigStore.findOne({storeNumber:"10436173721"}); 
 
   const shoppingCart = new ShoppingCart();
   let json = req.body;
@@ -11,6 +14,7 @@ exports.New = async(req, res,next) => {
   if(json.customer !== ''){
     shoppingCart.customer  = new mongoose.Types.ObjectId(json.customer);
   }
+  shoppingCart.ticketNumber = config.lastTicket; 
   shoppingCart.cash = json.cash;
   shoppingCart.credit = json.credit;
   shoppingCart.change = json.change;
@@ -20,7 +24,7 @@ exports.New = async(req, res,next) => {
   shoppingCart.user  = new mongoose.Types.ObjectId(json.user);
   let nd = new Date();
   shoppingCart.date = new Date(Date.UTC(nd.getFullYear(),nd.getMonth(),nd.getDate(),nd.getHours(),nd.getMinutes(),nd.getSeconds()));
-  shoppingCart.year   =nd.getFullYear();
+  shoppingCart.year   = nd.getFullYear();
   shoppingCart.month  = nd.getMonth()+1;
   shoppingCart.day    = nd.getDate();
   shoppingCart.hour   = nd.getHours();
@@ -33,19 +37,20 @@ exports.New = async(req, res,next) => {
         product:new mongoose.Types.ObjectId(product.productId.trim()),
         quantity:product.quantity,
         price:product.price
-      }
+      } 
     )
   });
 
   try {
       //save record
       await shoppingCart.save();
-
+      setTicketNumber("10436173721");
+      
       // json to xml
       var shoppingCartJson =  JSON.stringify(shoppingCart) ;
-      storeData(shoppingCartJson,"c:/print/queve/data,json")
+      storeData(shoppingCartJson,"c:/print/queve/"+shoppingCart.ticketNumber+".json");
 
-      res.json({message: 'Se guardo la venta correctamente',cart:json.id})
+      res.json({message: 'Se guardo la venta correctamente',cart:json.id});
   } catch (error) {
       //console log, and next
       console.log(error);
@@ -56,11 +61,30 @@ exports.New = async(req, res,next) => {
 
 const storeData = (data, path) => {
   try {
-    fs.writeFileSync(path, JSON.stringify(data))
+    fs.writeFileSync(path, JSON.stringify(data));
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
+
+const getTicketNumber = async(storeNumber) => {
+  try {
+    
+    return config.lastTicket * 1;
+  } catch (error) {
+    return -1;
+  }
+};
+
+const setTicketNumber = async (storeNumber) =>{
+  try {
+    const shoppingCart = await ConfigStore.findOne({storeNumber:storeNumber})
+    shoppingCart.lastTicket = shoppingCart.lastTicket + 1;
+    shoppingCart.save();
+  } catch (error) {
+    return -1;
+  }
+};
 
 //Show All ShoppingCart
 exports.List = async(req, res,next) => {
@@ -128,15 +152,8 @@ exports.Delete = async(req, res,next) => {
 exports.Search = async(req, res,next) => {
   try {
     const {user} = req.params;
-    const {year,month,day} = req.body
-
-    console.log(req.body);
-    console.log(req.params);
-
-    // var newDate = new Date(date);
-    // var iniDate = new Date(Date.UTC(nd.getFullYear(),nd.getMonth(),nd.getDate(),00,00,00));
-    // var endDate = new Date(Date.UTC(newDate.getFullYear(),newDate.getMonth(),newDate.getDate(),23,59,59));
-    // console.log(newDate);
+    const {year,month,day} = req.body;
+    
     var userId = new mongoose.Types.ObjectId(user);
     console.log(typeof(userId));
 
@@ -156,16 +173,7 @@ exports.Search = async(req, res,next) => {
       path:'details.product',
       model:'Product'
     });
-    res.json(shoppingCarts);
-    // var shoppingCart = await ShoppingCart.find(
-    //   {"created_on": {
-    //     "$gte": new Date(date.y, 7, 14),
-    //     "$lt": new Date(2012, 7, 15)}})
-    //   .populate('customer')
-    //   .populate({
-    //     path:'details.product',
-    //     model:'Product'
-    //   });
+    res.json(shoppingCarts); 
 
   } catch (error) {
 
