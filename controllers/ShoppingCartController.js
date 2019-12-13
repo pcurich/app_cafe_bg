@@ -45,10 +45,22 @@ exports.New = async(req, res,next) => {
       //save record
       await shoppingCart.save();
       setTicketNumber("10436173721");
-      
+      const shoppingCartJson = await ShoppingCart.findById(shoppingCart._id)
+      .populate({
+        path :'customer',
+        model: 'Customer'
+      })
+      .populate({
+        path :'user',
+        model: 'User'
+      })
+      .populate({
+        path:'details.product',
+        model:'Product'
+      });
       // json to xml
-      var shoppingCartJson =  JSON.stringify(shoppingCart) ;
-      storeData(shoppingCartJson,"c:/print/queve/"+shoppingCart.ticketNumber+".json");
+      var shoppingCartJson2 =  JSON.stringify(shoppingCartJson) ;
+      storeData(shoppingCartJson2,"c:/print/queve/"+shoppingCart.ticketNumber+".json");
 
       res.json({message: 'Se guardo la venta correctamente',cart:json.id});
   } catch (error) {
@@ -61,7 +73,7 @@ exports.New = async(req, res,next) => {
 
 const storeData = (data, path) => {
   try {
-    fs.writeFileSync(path, JSON.stringify(data));
+    fs.writeFileSync(path, (data));
   } catch (err) {
     console.error(err);
   }
